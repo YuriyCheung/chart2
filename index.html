@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Library Self-Checkout Process Flow</title>
+    <!-- 引入 Mermaid 函式庫 -->
+    <script type="module">
+      import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+      mermaid.initialize({ 
+        startOnLoad: true,
+        theme: 'base',
+        themeVariables: {
+          fontFamily: 'Arial, Helvetica, sans-serif',
+          fontSize: '15px',
+          primaryColor: '#ffffff',
+          primaryBorderColor: '#1a73e8',
+          lineColor: '#555'
+        },
+        flowchart: { 
+          curve: 'stepBefore',
+          nodeSpacing: 35,
+          rankSpacing: 40,
+          padding: 12
+        }
+      });
+    </script>
+    <style>
+        @page {
+            size: A4 landscape;
+            margin: 10mm;
+        }
+        body { 
+            font-family: Arial, sans-serif; 
+            margin: 0;
+            padding: 20px; 
+            background-color: #f4f7f6; 
+            display: flex;
+            justify-content: center;
+        }
+        .container { 
+            width: 100%;
+            max-width: 1200px; 
+            background: white; 
+            padding: 30px; 
+            border-radius: 12px; 
+            box-shadow: 0 8px 16px rgba(0,0,0,0.1); 
+        }
+        h1 { 
+            text-align: center; 
+            color: #333;
+            font-size: 22px;
+            margin-bottom: 20px;
+        }
+        .mermaid {
+            display: flex;
+            justify-content: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Library Self-Checkout Process Flow</h1>
+        
+        <!-- 這裡是流程圖代碼 -->
+        <pre class="mermaid">
+flowchart TD
+    A([START]) --> B["Reader selects books"]
+    B --> C["Reader views pre-check guidance"]
+    C --> D["Reader joins one common queue"]
+    D --> E["Available self-checkout machine"]
+    E --> F["Reader authenticates account"]
+    
+    F --> G{"Account valid?"}
+    
+    G -- No --> G1["Directed immediately to support point"]
+    G1 --> END_NODE([END])
+    
+    G -- Yes --> H["Reader places items on RFID reader<br/>using on-screen guidance"]
+    
+    H --> I{"All items recognised?"}
+    
+    I -- No --> I1["One rescan attempt"]
+    I1 --> I2{"Failure persists?"}
+    I2 -- Yes --> I3["Support point"]
+    I3 --> END_NODE
+    I2 -- No --> J
+    
+    I -- Yes --> J["System displays titles, due dates<br/>and confirmation"]
+    J --> K["Reader confirms transaction"]
+    K --> L["System updates account and security status"]
+    L --> M["Electronic receipt by default /<br/>printed receipt on request"]
+    M --> N["Reader exits through gate"]
+    N --> END_NODE
+
+    classDef startEnd fill:#d9ead3,stroke:#38761d,stroke-width:2px,color:#000
+    classDef step fill:#e8f0fe,stroke:#1a73e8,stroke-width:2px,color:#000
+    classDef decision fill:#fff2cc,stroke:#bf9000,stroke-width:2px,color:#000
+    classDef error fill:#fce5cd,stroke:#b45f06,stroke-width:2px,color:#000
+
+    class A,END_NODE startEnd
+    class B,C,D,E,F,H,J,K,L,M,N step
+    class G,I,I2 decision
+    class G1,I1,I3 error
+        </pre>
+    </div>
+</body>
+</html>
